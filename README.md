@@ -64,6 +64,7 @@ scripts/contrast.py         WCAG checker for any pair, plus on-brand substitutes
 ```bash
 python3 .claude/skills/string-brand/scripts/contrast.py --matrix
 python3 .claude/skills/string-brand/scripts/contrast.py --find '#75F8CC' --on '#FFFFFF'
+python3 .claude/skills/string-brand/scripts/contrast.py --audit   # re-verify the docs
 ```
 
 The palette values, logo pairings, and font list come straight from the assets in this repo.

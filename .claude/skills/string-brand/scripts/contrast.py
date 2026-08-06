@@ -17,6 +17,7 @@ No dependencies beyond the standard library.
 
 import argparse
 import sys
+from pathlib import Path
 
 # Core palette, read from the official logo vectors.
 CORE = {
@@ -173,6 +174,68 @@ def cmd_find(fg_arg, bg_arg, threshold):
     return 0
 
 
+def cmd_audit():
+    """Re-verify every fg/bg pairing this skill documents.
+
+    The docs are hand-written and the ratios in them are easy to get wrong or to
+    let drift — an earlier version shipped status colors that sat at 3.0:1 on
+    their own tint backgrounds. Run this after editing any color.
+    """
+    import json
+    here = Path(__file__).resolve().parent.parent
+    tokens = json.loads((here / "assets" / "tokens.json").read_text())
+    failures = []
+    print("\n  Auditing documented pairings\n")
+
+    def check(label, fg, bg, need):
+        r = ratio(parse_hex(fg), parse_hex(bg))
+        ok = r >= need
+        if not ok:
+            failures.append(f"{label}: {fg} on {bg} = {r:.2f} (needs {need})")
+        print(f"    {'PASS' if ok else 'FAIL'}  {label:<34} {r:5.2f}:1  (needs {need})")
+
+    sem = tokens["semantic"]
+    for theme in ("light", "dark"):
+        s = sem[theme]
+        check(f"{theme}: body text on page", s["text"], s["bg"], 4.5)
+        check(f"{theme}: body text on surface", s["text"], s["bgSurface"], 4.5)
+        check(f"{theme}: muted text on page", s["textMuted"], s["bg"], 4.5)
+        check(f"{theme}: accent text on page", s["textAccent"], s["bg"], 4.5)
+        check(f"{theme}: button label on button", s["buttonFg"], s["buttonBg"], 4.5)
+
+    for name, v in tokens["color"]["status"].items():
+        if name.startswith("$"):
+            continue
+        check(f"status {name} on tint", v["fg"], v["bg"], 4.5)
+        check(f"status {name} on white", v["fg"], "#FFFFFF", 4.5)
+        check(f"status {name} on ink-50", v["fg"], "#F7F7F7", 4.5)
+        if "fgOnDark" in v:
+            check(f"status {name} on ink-600", v["fgOnDark"], "#33373B", 4.5)
+            check(f"status {name} on ink-700", v["fgOnDark"], "#26292C", 4.5)
+
+    for pair in tokens["logo"]["approvedPairings"]:
+        stated = pair["contrast"]
+        r = ratio(parse_hex("#" + {"green": "75F8CC", "dark": "33373B",
+                                   "white": "FFFFFF"}[pair["colorway"]]),
+                  parse_hex(pair["background"]))
+        ok = abs(r - stated) < 0.05
+        if not ok:
+            failures.append(f"logo {pair['colorway']} on {pair['background']}: "
+                            f"stated {stated}, actual {r:.2f}")
+        print(f"    {'PASS' if ok else 'FAIL'}  logo {pair['colorway']:<5} on "
+              f"{pair['background']:<9} stated {stated:>5}  actual {r:5.2f}")
+
+    print()
+    if failures:
+        print(f"  {len(failures)} FAILED:")
+        for f in failures:
+            print(f"    - {f}")
+        print()
+        return 1
+    print("  All documented pairings verified.\n")
+    return 0
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(
         description="WCAG contrast checker for the String brand palette.",
@@ -184,6 +247,8 @@ def main(argv=None):
                    help="foreground and background, e.g. '#33373B' '#FFFFFF'")
     p.add_argument("--matrix", action="store_true",
                    help="print the core palette contrast matrix")
+    p.add_argument("--audit", action="store_true",
+                   help="re-verify every fg/bg pairing documented in this skill")
     p.add_argument("--on", metavar="BG",
                    help="rank every token against this background")
     p.add_argument("--find", metavar="FG",
@@ -193,6 +258,8 @@ def main(argv=None):
     args = p.parse_args(argv)
 
     try:
+        if args.audit:
+            return cmd_audit()
         if args.matrix:
             return cmd_matrix()
         if args.find:

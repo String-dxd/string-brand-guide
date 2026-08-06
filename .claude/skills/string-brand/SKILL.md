@@ -140,7 +140,13 @@ And one tool:
   ```bash
   python3 .claude/skills/string-brand/scripts/contrast.py '#33373B' '#C0F4FB'
   python3 .claude/skills/string-brand/scripts/contrast.py --matrix   # whole palette
+  python3 .claude/skills/string-brand/scripts/contrast.py --audit    # re-verify these docs
   ```
+
+  `--audit` re-checks every foreground/background pairing this skill documents and exits
+  non-zero if any has drifted. Run it after editing a color anywhere in the skill — the
+  ratios in these files are hand-written, and an earlier version shipped status colors that
+  sat at 3.0:1 on their own tint backgrounds.
 
 ## Working on-brand
 

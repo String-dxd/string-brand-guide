@@ -69,6 +69,13 @@ step stays in the brand's hue family rather than drifting toward a generic teal.
 label on a white page. `green-500` in that position is unreadable; `green-800` keeps the hue
 relationship and passes AA.
 
+One caveat on reading the "On white" column: it means `#FFFFFF` exactly, and the margin is
+thin enough that a tinted light surface eats it. `green-800` measures 4.76 on white but 4.44
+on `ink-50 #F7F7F7` and 3.99 on `ink-100 #EBEBEB` — so green link text sitting on a card
+rather than the page background quietly drops below AA. On any surface that isn't pure white,
+step down to `green-900 #44675F`. The same thinness applies to `ink-500` and `sky-800`; when
+the background isn't `#FFFFFF`, check the real pair with `scripts/contrast.py`.
+
 ## Neutral / ink ramp
 
 Built from `#33373B`, so the whole scale carries the same cool cast. Note the base sits at
@@ -195,12 +202,30 @@ every brand accent implies success. Use a separate, clearly different green (or 
 checkmark plus neutral text).
 
 Pick status colors tuned to sit next to `#33373B` — cool and slightly desaturated rather than
-pure hues. Reasonable defaults, contrast-checked against both white and `#33373B`:
+pure hues. These defaults are darker than the usual web palette on purpose: a status color is
+almost always set on its own pale tint, and the familiar mid-tone versions
+(`#D64545`, `#2E9E6B`, and friends) land around 3:1 there, which fails AA for the small text
+status messages are usually set in.
 
-```
-error    #D64545 (light bg #FDECEC)     warning  #C77A16 (light bg #FDF3E3)
-success  #2E9E6B (light bg #E8F6EF)     info     #3A7CA5 (light bg #E9F2F8)
-```
+Every foreground below clears 4.5:1 against its own tint, against `#FFFFFF`, and against
+`ink-50 #F7F7F7`, so it holds up on any light surface in this system:
+
+| | Foreground | Tint background | On tint | On white |
+|---|---|---|---|---|
+| Error | `#C13E3E` | `#FDECEC` | 4.57 | 5.22 |
+| Warning | `#9F6212` | `#FDF3E3` | 4.52 | 4.96 |
+| Success | `#247D55` | `#E8F6EF` | 4.56 | 5.07 |
+| Info | `#367399` | `#E9F2F8` | 4.55 | 5.16 |
+
+On dark surfaces those foregrounds are far too dark (all around 2.3:1 on `#33373B`), so flip
+to the light variants. Each clears 4.5:1 on both the `ink-600` page and the `ink-700` card:
+
+| | Foreground | On `#33373B` | On `#26292C` |
+|---|---|---|---|
+| Error | `#D98989` | 4.51 | 5.49 |
+| Warning | `#C19965` | 4.58 | 5.58 |
+| Success | `#73AC92` | 4.60 | 5.60 |
+| Info | `#7CA4BD` | 4.51 | 5.50 |
 
 Flag in your response that these are outside the brand guide so the choice can be reviewed.
 
