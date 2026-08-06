@@ -1,0 +1,138 @@
+/* String brand design tokens
+ * Source: github.com/string-dxd/string-brand-guide
+ *
+ * The four core values (--string-green, --string-dark, --string-sky, --string-white)
+ * are read from the official logo vectors. Everything else is derived — see
+ * references/colors.md for how, and for the contrast ratio of every value.
+ *
+ * Usage: drop this in, then reference var(--string-green) instead of pasting hex codes.
+ */
+
+:root {
+  /* ---- Core palette ---- */
+  --string-green: #75f8cc;
+  --string-dark: #33373b;
+  --string-sky: #c0f4fb;
+  --string-white: #ffffff;
+
+  /* ---- Green ramp ---- */
+  --string-green-50: #eafef7;
+  --string-green-100: #cffded;
+  --string-green-200: #a5fade;
+  --string-green-300: #8af9d4;
+  --string-green-500: #75f8cc; /* base */
+  --string-green-600: #69d5b2;
+  --string-green-700: #5db398;
+  --string-green-800: #4b7c6f; /* 4.76:1 on white — green text on light */
+  --string-green-900: #44675f; /* 6.27:1 on white */
+
+  /* ---- Neutral / ink ramp (base at 600, see colors.md) ---- */
+  --string-ink-50: #f7f7f7;
+  --string-ink-100: #ebebeb;
+  --string-ink-200: #d2d3d4;
+  --string-ink-300: #b1b3b5;
+  --string-ink-400: #8d8f91;
+  --string-ink-500: #64676a; /* 5.69:1 on white — secondary text */
+  --string-ink-600: #33373b; /* base */
+  --string-ink-700: #26292c;
+  --string-ink-800: #1a1c1e;
+  --string-ink-900: #0e0f11;
+
+  /* ---- Sky ramp (base at 300) ---- */
+  --string-sky-50: #e3fafd;
+  --string-sky-100: #d3f7fc;
+  --string-sky-300: #c0f4fb; /* base */
+  --string-sky-400: #a1cad1;
+  --string-sky-500: #819fa5;
+  --string-sky-800: #556469; /* 6.15:1 on white */
+
+  /* ---- Typography ---- */
+  --string-font-display: "Space Grotesk", "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --string-font-body: "Montserrat", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --string-text-display: 3.8rem;   /* 61px */
+  --string-text-h1: 3.05rem;       /* 49px */
+  --string-text-h2: 2.44rem;       /* 39px */
+  --string-text-h3: 1.95rem;       /* 31px */
+  --string-text-h4: 1.56rem;       /* 25px */
+  --string-text-body-lg: 1.25rem;  /* 20px */
+  --string-text-body: 1rem;        /* 16px */
+  --string-text-sm: 0.875rem;      /* 14px */
+  --string-text-xs: 0.75rem;       /* 12px */
+
+  --string-leading-display: 1.05;
+  --string-leading-heading: 1.2;
+  --string-leading-body: 1.65;
+  --string-tracking-display: -0.02em;
+  --string-tracking-overline: 0.12em;
+
+  /* ---- Semantic: light theme (default) ---- */
+  --string-bg: var(--string-white);
+  --string-bg-surface: var(--string-ink-50);
+  --string-bg-accent: var(--string-sky-300);
+  --string-border: var(--string-ink-200);
+  --string-text: var(--string-ink-600);
+  --string-text-muted: var(--string-ink-500);
+  --string-text-disabled: var(--string-ink-400);
+  --string-text-accent: var(--string-green-800);
+  --string-focus: var(--string-ink-600);
+
+  --string-btn-bg: var(--string-ink-600);
+  --string-btn-fg: var(--string-white);
+  --string-btn-bg-hover: var(--string-ink-700);
+  --string-btn-bg-active: var(--string-ink-800);
+}
+
+/* ---- Semantic: dark theme ----
+ * Green on dark is the signature pairing (9.17:1) and the palette's strongest look.
+ * Applies on system preference; [data-theme] overrides win in both directions. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --string-bg: var(--string-ink-600);
+    --string-bg-surface: var(--string-ink-700);
+    --string-bg-accent: var(--string-ink-700);
+    --string-border: var(--string-green-800);
+    --string-text: var(--string-white);
+    --string-text-muted: var(--string-ink-300);
+    --string-text-disabled: var(--string-ink-400);
+    --string-text-accent: var(--string-green-500);
+    --string-focus: var(--string-green-500);
+
+    --string-btn-bg: var(--string-green-500);
+    --string-btn-fg: var(--string-ink-600);
+    --string-btn-bg-hover: var(--string-green-300);
+    --string-btn-bg-active: var(--string-green-600);
+  }
+}
+
+:root[data-theme="dark"] {
+  --string-bg: var(--string-ink-600);
+  --string-bg-surface: var(--string-ink-700);
+  --string-bg-accent: var(--string-ink-700);
+  --string-border: var(--string-green-800);
+  --string-text: var(--string-white);
+  --string-text-muted: var(--string-ink-300);
+  --string-text-disabled: var(--string-ink-400);
+  --string-text-accent: var(--string-green-500);
+  --string-focus: var(--string-green-500);
+
+  --string-btn-bg: var(--string-green-500);
+  --string-btn-fg: var(--string-ink-600);
+  --string-btn-bg-hover: var(--string-green-300);
+  --string-btn-bg-active: var(--string-green-600);
+}
+
+/* ---- Optional base styles ---- */
+body {
+  background: var(--string-bg);
+  color: var(--string-text);
+  font-family: var(--string-font-body);
+  font-size: var(--string-text-body);
+  line-height: var(--string-leading-body);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--string-font-display);
+  line-height: var(--string-leading-heading);
+  letter-spacing: var(--string-tracking-display);
+}
