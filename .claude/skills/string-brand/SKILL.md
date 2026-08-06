@@ -1,6 +1,19 @@
 ---
 name: string-brand
-description: The String brand system — the official color palette (#75F8CC mint, #33373B dark, #C0F4FB sky), the Montserrat + Space Grotesk typefaces, and the logo/mark asset files with their approved background pairings. Use this skill whenever you are producing anything that carries String's identity or picking colors, fonts, or a logo file for it: websites, landing pages, web apps, UI components, CSS/Tailwind themes, design tokens, slide decks, PDFs, social images, README banners, favicons, email templates, diagrams, or charts. Trigger it even when the request never says "brand" or "style guide" — "build a landing page for String", "make the dashboard match our colors", "what's our green?", "add the logo to the header", and "set up the fonts" all need it. Consult it before inventing a hex value, choosing a font stack, or referencing a logo path, so the output matches the real guide instead of a plausible guess.
+# Folded block scalar, not a plain scalar. A bare " #" in YAML starts a comment, so an
+# unquoted description containing hex values silently truncates at the first one.
+description: >-
+  The String brand system — the official color palette (#75F8CC mint, #33373B dark,
+  #C0F4FB sky), the Montserrat + Space Grotesk typefaces, and the logo/mark asset files
+  with their approved background pairings. Use this skill whenever you are producing
+  anything that carries String's identity or picking colors, fonts, or a logo file for it:
+  websites, landing pages, web apps, UI components, CSS/Tailwind themes, design tokens,
+  slide decks, PDFs, social images, README banners, favicons, email templates, diagrams,
+  or charts. Trigger it even when the request never says "brand" or "style guide" —
+  "build a landing page for String", "make the dashboard match our colors", "what's our
+  green?", "add the logo to the header", and "set up the fonts" all need it. Consult it
+  before inventing a hex value, choosing a font stack, or referencing a logo path, so the
+  output matches the real guide instead of a plausible guess.
 ---
 
 # String Brand System
@@ -39,11 +52,17 @@ Assets live at the repo root. Two shapes, three colorways, four formats:
   tight or square: favicons, avatars, app icons, watermarks.
 
 ```
-4. Svg Separate Files/{primary,mark}_{green,dark,white}.svg   ← use these for web/UI
+4. Svg Separate Files/{primary,mark}_{green,dark,white}.svg    ← use these for web/UI
 3. Png Transparent Files/{primary,mark}_{green,dark,white}.png ← raster, transparent
-1. Vector Masters/{Ai.ai,Eps.eps,Pdf.pdf,Svg.svg}              ← print + handoff to designers
+1. Vector Masters/{Ai.ai,Eps.eps,Pdf.pdf}                      ← print + handoff to designers
+1. Vector Masters/Svg.svg                                      ← NOT a logo, see below
 2. Jpegs/1..12.jpg                                             ← the rendered guide boards
 ```
+
+`1. Vector Masters/Svg.svg` is a 1280×1024 guide board — a page layout containing a logo, not
+an asset you can drop into a design. Reaching for it because the name looks right is the easy
+mistake here. For print or a designer handoff use `Ai.ai`, `Eps.eps`, or `Pdf.pdf`; for
+anything on screen use the separate SVGs.
 
 Pick the colorway from the background, not from taste. The guide sanctions exactly these
 six pairings (boards 1–12 are these six, each shown as mark then logotype):
